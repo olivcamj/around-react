@@ -17,7 +17,6 @@ function Main(props) {
         setUserName(userData.name);
         setUserDescription(userData.description);
         setUserAvatar(userData.avatar);
-        console.log(initialCards);
         return initialCards;
       })
       .then((res) => {
