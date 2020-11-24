@@ -72,11 +72,9 @@ function App() {
               />
               <span className="form__error"></span>
             </label>
-            <button type="submit" className="form__btn">
-              Save
-            </button>
           </>
         }
+        buttonText="Save"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}
       />
@@ -114,11 +112,9 @@ function App() {
                 <span id="profile-text-error" className="form__error"></span>
               </label>
             </fieldset>
-            <button type="submit" className="form__btn">
-              Save
-            </button>
           </>
         }
+        buttonText="Save"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}
       />
@@ -153,22 +149,16 @@ function App() {
                 <span id="card-url-error" className="form__error"></span>
               </label>
             </fieldset>
-            <button type="submit" className="form__btn">
-              Create
-            </button>
           </>
         }
+        buttonText="Create"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}
       />
       <PopupWithForm
         name="deleteCard"
         title="Are you sure?"
-        children={
-          <button type="submit" className="form__btn">
-            Yes
-          </button>
-        }
+        buttonText="Yes"
         isOpen={
           false
         } /* place a variable here to change the state of delete card */
