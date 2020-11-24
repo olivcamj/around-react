@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../utils/Api.js";
-import Cards from "./Cards.js";
+import Card from "./Card.js";
 import ImagePopup from "./ImagePopup.js";
 
 function Main(props) {
@@ -76,7 +76,7 @@ function Main(props) {
         <ul className="elements__container">
           {cards.map((card) => {
             return (
-              <Cards
+              <Card
                 key={card._id}
                 src={card.link}
                 name={card.name}
