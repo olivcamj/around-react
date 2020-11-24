@@ -4,7 +4,7 @@ class Api {
         this._headers = headers;
     }
 
-    getUserData(){
+    getInitialData(){
         return Promise.all([this.getUserInfo(), this.getInitialCards()])
     }
 
