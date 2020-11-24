@@ -12,7 +12,7 @@ function Main(props) {
 
   useEffect(() => {
     api
-      .getUserData()
+      .getInitialData()
       .then(([userData, initialCards]) => {
         setUserName(userData.name);
         setUserDescription(userData.description);
