@@ -10,7 +10,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
 
-  const [selectedCard, setSelectedCard] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
   const [isImageOpen, setIsImageOpen] = useState(false);
 
   function handleEditAvatarClick() {
@@ -28,12 +28,11 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    setSelectedCard(false);
   }
+
   function handleCardClick(card) {
     setIsImageOpen(!isImageOpen);
     setSelectedCard(card);
-    console.log(card);
   }
 
   return (
