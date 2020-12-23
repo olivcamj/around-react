@@ -1,10 +1,20 @@
 import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function Card(props) {
+  const currentUser = React.useContext(CurrentUserContext);
+  // Checking if you are the owner of the current card
+  const isOwn = props.card.owner._id === currentUser._id;
+
+  const cardDeleteButtonClassName = (
+    `card__delete-button ${isOwn ? 'card__removeBtn_visible' : 'card__removeBtn_type_hidden'}`
+  );
+
   function handleClick() {
     props.onCardClick(props.card);
   }
 
+  
   return (
     <li key={props.card} className="card">
       <div
@@ -15,7 +25,7 @@ function Card(props) {
       <button
         aria-label="Remove"
         type="button"
-        className="card__removeBtn"
+        className={cardDeleteButtonClassName}
       ></button>
       <div className="card__description">
         <h2 className="card__text">{props.name}</h2>
