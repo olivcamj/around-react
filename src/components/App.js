@@ -123,7 +123,6 @@ function handleCardDelete(card) {
   .then(() =>{
     const arrayCopy = cards.filter((c) => c._id !== card._id);
     setCards(arrayCopy);
-
   })
   .catch(err => console.log(err))
 }
