@@ -19,26 +19,34 @@ function App() {
   const [cards, setCards] = useState([]);
   
   useEffect(() => {
-    api.getInitialData() 
-    .then(([userData, initialCards]) => {
+    api.getUserInfo() 
+    .then((userData) => {
       setCurrentUser(userData);
-      return initialCards;
-    })
-    .then((res) =>{
-      setCards(
-        res.map((card) => ({
-          link: card.link,
-          name: card.name,
-          _id: card._id,
-          owner: card.owner,
-          likes: card.likes.length,
-        }))
-    );
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    }).catch((err) => {console.log(err)});
   }, []);
+    
+    
+    
+    
+    useEffect(() =>{
+      if(!currentUser) return;
+      api.getInitialCards()
+      .then((res) => {
+        console.log('res', res);
+        setCards(
+            res.map((card) => ({
+              name: card.name,
+              link: card.link,
+              likes: card.likes,
+              _id: card._id,
+              owner: card.owner
+            }))
+          )
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      }, [currentUser]);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -62,6 +70,30 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleCardLike(card) {
+    // Check one more time if this card was already liked
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+    // Send a request to the API and getting the updated card data
+    api.changeLikeStatus(card._id, !isLiked).then((newCard) => {
+        // Create a new array based on the existing one and putting a new card into it
+      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      // Update the state
+      setCards(newCards);
+    });
+}
+
+
+function handleCardDelete(card) {
+  api.deleteCard(card._id)
+  .then(() =>{
+    const arrayCopy = cards.filter((c) => c._id !== card._id);
+    setCards(arrayCopy);
+
+  })
+  .catch(err => console.log(err))
+}
+
   return (
     <div className="App">
       <CurrentUserContext.Provider value={currentUser}>
@@ -75,6 +107,10 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
             selectedCard={selectedCard}
+            onCardDelete={(card) => {handleCardDelete(card)}} 
+            onCardLike={(card) => {handleCardLike(card)}}
+            handleCardLike={handleCardLike} 
+            handleCardDelete={handleCardDelete}
           />
 
           <Footer />
