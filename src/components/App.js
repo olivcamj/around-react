@@ -29,40 +29,53 @@ function App() {
     
     
     
-    useEffect(() =>{
-      if(!currentUser) return;
-      api.getInitialCards()
-      .then((res) => {
-        console.log('res', res);
-        setCards(
-            res.map((card) => ({
-              name: card.name,
-              link: card.link,
-              likes: card.likes,
-              _id: card._id,
-              owner: card.owner
-            }))
-          )
+useEffect(() =>{
+  if(!currentUser) return;
+  api.getInitialCards()
+  .then((res) => {
+    console.log('res', res);
+    setCards(
+        res.map((card) => ({
+          name: card.name,
+          link: card.link,
+          likes: card.likes,
+          _id: card._id,
+          owner: card.owner
+        }))
+      )
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  }, [currentUser]);
+
+  function handleUpdateUser({name, about}) {
+
+      api.editUserInfo({name, about})
+      .then(() => {
+        setCurrentUser({
+          name,
+          about,
+          avatar: currentUser.avatar
+        });
       })
-      .catch((err) => {
-        console.log(err);
-      });
-      }, [currentUser]);
-
-      function handleUpdateUser({name, about}) {
-
-          api.editUserInfo({name, about})
-          .then(() => {
-            setCurrentUser({
-              name,
-              about,
-              avatar: currentUser.avatar
-            });
-          })
-          .then(() => isEditProfilePopupOpen(false))
-          .catch((err) => console.log(err));
-      }
-      
+      .then(() => isEditProfilePopupOpen(false))
+      .catch((err) => console.log(err));
+  }
+  
+  function handleUpdateAvatar(avatar) {
+    api
+      .setAvatar({ avatar })
+      .then(() => {
+        setCurrentUser({
+          name: currentUser.name,
+          about: currentUser.about,
+          avatar,
+        });
+      })
+      .then(() => setEditAvatarPopupOpen(false))
+      .catch((err) => console.log(err));
+  }
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
