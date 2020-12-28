@@ -42,13 +42,13 @@ class Api {
         .then((res) => res.ok ? res.json() : Promise.reject(`Error! ${res.statusText}`))
     }
 
-    editUserInfo(data) {
+    editUserInfo({name, about}) {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
             method: "PATCH",
             body: JSON.stringify({
-                name: data.name,
-                about: data.title
+                name,
+                about,
             })
         })
         .then((res) => res.ok ? res.json() : Promise.reject(`Error! ${res.statusText}`))
