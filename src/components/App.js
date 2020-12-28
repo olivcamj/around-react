@@ -7,6 +7,7 @@ import ImagePopup from "./ImagePopup.js";
 import { api } from '../utils/Api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import EditProfilePopup from "./EditProfilePopup.js";
+import EditAvatarPopup from "./EditAvatarPopup.js";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -65,7 +66,7 @@ useEffect(() =>{
   
   function handleUpdateAvatar(avatar) {
     api
-      .setAvatar({ avatar })
+      .setUserAvatar({ avatar })
       .then(() => {
         setCurrentUser({
           name: currentUser.name,
@@ -151,26 +152,10 @@ function handleCardDelete(card) {
           onCardClick={handleCardClick}
         />
 
-        <PopupWithForm
-          name="setAvatar"
-          title="Change profile picture"
-          children={
-            <>
-              <label className="form__label">
-                <input
-                  type="url"
-                  name="link"
-                  className="form__item form__item_el_url"
-                  placeholder="Image-link"
-                  required
-                />
-                <span className="form__error"></span>
-              </label>
-            </>
-          }
-          buttonText="Save"
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
         />
 
         <EditProfilePopup 
