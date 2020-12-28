@@ -67,7 +67,7 @@ class Api {
             .then((res) => res.ok ? res.json() : Promise.reject(`Error! ${res.statusText}`))
         }
         }
-    setUserAvatar(avatar){
+    setUserAvatar({ avatar }){
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             headers: this._headers,
             method: "PATCH",
