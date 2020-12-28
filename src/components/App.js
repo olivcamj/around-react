@@ -49,6 +49,21 @@ function App() {
       });
       }, [currentUser]);
 
+      function handleUpdateUser({name, about}) {
+
+          api.editUserInfo({name, about})
+          .then(() => {
+            setCurrentUser({
+              name,
+              about,
+              avatar: currentUser.avatar
+            });
+          })
+          .then(() => isEditProfilePopupOpen(false))
+          .catch((err) => console.log(err));
+      }
+      
+
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
   }
@@ -147,9 +162,11 @@ function handleCardDelete(card) {
 
         <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups} />
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+          />
 
-          
+
         <PopupWithForm
           name="addCard"
           title="Add Place"
