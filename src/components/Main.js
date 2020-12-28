@@ -5,6 +5,7 @@ import ImagePopup from "./ImagePopup.js";
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
+
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
@@ -50,11 +51,15 @@ function Main(props) {
             return (
               <Card
                 key={card._id}
+                card={card}
                 src={card.link}
                 name={card.name}
-                likes={card.likes}
-                card={card}
+                likes={card.likes.length}
+                owner={card.owner}
+                currrentUserId={currentUser._id}
                 onCardClick={props.onCardClick}
+                /*onDeleteClick={(card) => props.handleCardDelete(card)} */
+							  onCardLike={() => {props.handleCardLike(card)}}
               />
             );
           })}
