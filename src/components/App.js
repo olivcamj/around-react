@@ -8,6 +8,7 @@ import { api } from '../utils/Api.js';
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import EditProfilePopup from "./EditProfilePopup.js";
 import EditAvatarPopup from "./EditAvatarPopup.js";
+import AddPlacePopup from "./AddPlacePopup.js";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -20,21 +21,17 @@ function App() {
   const [currentUser, setCurrentUser] = useState("");
   const [cards, setCards] = useState([]);
   
-  useEffect(() => {
-    api.getUserInfo() 
-    .then((userData) => {
-      setCurrentUser(userData);
-    }).catch((err) => {console.log(err)});
-  }, []);
-    
-    
-    
+useEffect(() => {
+  api.getUserInfo() 
+  .then((userData) => {
+    setCurrentUser(userData);
+  }).catch((err) => {console.log(err)});
+}, []);
     
 useEffect(() =>{
   if(!currentUser) return;
   api.getInitialCards()
   .then((res) => {
-    console.log('res', res);
     setCards(
         res.map((card) => ({
           name: card.name,
@@ -51,7 +48,6 @@ useEffect(() =>{
   }, [currentUser]);
 
   function handleUpdateUser({name, about}) {
-
       api.editUserInfo({name, about})
       .then(() => {
         setCurrentUser({
@@ -65,8 +61,7 @@ useEffect(() =>{
   }
   
   function handleUpdateAvatar(avatar) {
-    api
-      .setUserAvatar({ avatar })
+    api.setUserAvatar({ avatar })
       .then(() => {
         setCurrentUser({
           name: currentUser.name,
@@ -75,6 +70,15 @@ useEffect(() =>{
         });
       })
       .then(() => setEditAvatarPopupOpen(false))
+      .catch((err) => console.log(err));
+  }
+  
+  function handleAddPlaceSubmit({link, name}) {
+      api.addCard({ link, name })
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+      })
+      .then(() => setAddPlacePopupOpen(false))
       .catch((err) => console.log(err));
   }
 
@@ -164,44 +168,12 @@ function handleCardDelete(card) {
           onUpdateUser={handleUpdateUser}
           />
 
-
-        <PopupWithForm
-          name="addCard"
-          title="Add Place"
-          children={
-            <>
-              <fieldset className="form__input-container">
-                <label className="form__label">
-                  <input
-                    id="card-title"
-                    type="text"
-                    name="name"
-                    className="form__item form__item_el_title"
-                    placeholder="Title"
-                    minLength="1"
-                    maxLength="30"
-                    required
-                  />
-                  <span id="card-title-error" className="form__error"></span>
-                </label>
-                <label className="form__label">
-                  <input
-                    id="card-url"
-                    type="url"
-                    name="link"
-                    className="form__item form__item_el_url"
-                    placeholder="Image-link"
-                    required
-                  />
-                  <span id="card-url-error" className="form__error"></span>
-                </label>
-              </fieldset>
-            </>
-          }
-          buttonText="Create"
+        <AddPlacePopup 
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
         />
+
         <PopupWithForm
           name="deleteCard"
           title="Are you sure?"
