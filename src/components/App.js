@@ -29,7 +29,6 @@ useEffect(() => {
 }, []);
     
 useEffect(() =>{
-  if(!currentUser) return;
   api.getInitialCards()
   .then((res) => {
     setCards(
@@ -45,7 +44,7 @@ useEffect(() =>{
   .catch((err) => {
     console.log(err);
   });
-  }, [currentUser]);
+  }, []);
 
   function handleUpdateUser({name, about}) {
       api.editUserInfo({name, about})
