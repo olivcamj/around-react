@@ -1,12 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 import Card from "./Card.js";
-//import {api} from "../utils/Api.js";
-import ImagePopup from "./ImagePopup.js";
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
 
-  const currentUser = React.useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   return (
     <main className="content">
@@ -15,7 +13,7 @@ function Main(props) {
           <div className="profile__avatar-container">
             <img
               src={currentUser.avatar}
-              alt="A profile of Jacques Cousteau"
+              alt={currentUser.name}
               className="profile__avatar"
             />
             <button
@@ -47,10 +45,11 @@ function Main(props) {
 
       <section className="elements section">
         <ul className="elements__container">
-          {props.cards.map((card) => {
+          {props.cards.map((card, index) => {
             return (
               <Card
-                key={card._id}
+                key={index}
+                id={card._id}
                 card={card}
                 src={card.link}
                 name={card.name}
@@ -62,15 +61,10 @@ function Main(props) {
 							  onCardLike={() => {props.handleCardLike(card)}}
               />
             );
-          })}
+          })
+          }
         </ul>
       </section>
-
-      <ImagePopup
-        card={props.selectedCard}
-        isOpen={props.isImageOpen}
-        onClose={props.onClose}
-      />
     </main>
   );
 }
