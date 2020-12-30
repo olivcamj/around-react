@@ -67,7 +67,7 @@ class Api {
             .then((res) => res.ok ? res.json() : Promise.reject(`Error! ${res.statusText}`))
         }
         }
-    setUserAvatar({ avatar }){
+    setUserAvatar({avatar}){
         return fetch(`${this._baseUrl}/users/me/avatar`, {
             headers: this._headers,
             method: "PATCH",
@@ -79,7 +79,7 @@ class Api {
     }
 }
 
-export const api = new Api({
+const api = new Api({
     baseUrl: "https://around.nomoreparties.co/v1/group-4",
     headers: {
         authorization: "072f7e25-49ec-4ac7-aa51-bf0613ff728e",
@@ -87,3 +87,4 @@ export const api = new Api({
     }
 });
 
+export default api;
